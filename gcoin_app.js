@@ -68,7 +68,7 @@ Promise.all([PromiseExec(cmdPatientAddress), PromiseExec(cmdDoctorUnspent)]).the
       var tail = TxHex.slice(TxHex.length-25, TxHex.length+1);
 
 
-      var rawData = "Hello World";
+      var rawData = "Test for medicine-log";
       var base64Data = new Buffer(rawData).toString('base64');
       var chr_len_base64Data = String.fromCharCode(base64Data.length);
       var hexData = "6a" + new Buffer(chr_len_base64Data).toString('hex') + new Buffer(base64Data).toString('hex');
