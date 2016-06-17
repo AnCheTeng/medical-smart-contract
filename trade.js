@@ -1,5 +1,17 @@
 var exec = require('child_process').exec;
 
+var sender = "patient";
+var receiver = "pharmacy";
+//var sender = "pharmacy";
+//var receiver = "patient";
+
+var sendingColor = 2;
+var tradingAmount = 2;
+var sendingAmount = null;
+var changeAmount = null;
+var feechangeAmount = null;
+
+
 function PromiseExec(cmd) {
   return new Promise(function(resolve, reject) {
     exec(cmd, function(error, stdout, stderr) {
@@ -19,16 +31,7 @@ function DockerCmd(role, cmd) {
 function ErrorHandler(err) {
   console.log(err);
 }
-var sender = "patient";
-var receiver = "pharmacy";
-//var sender = "pharmacy";
-//var receiver = "patient";
 
-var tradingAmount = 2;
-var sendingColor = 2;
-var sendingAmount = null;
-var changeAmount = null;
-var feechangeAmount = null;
 
 var cmdSenderAddress = DockerCmd(sender, "getfixedaddress");
 var cmdReceiverAddress = DockerCmd(receiver, "getfixedaddress");
@@ -40,8 +43,10 @@ Promise.all([PromiseExec(cmdSenderAddress), PromiseExec(cmdReceiverAddress), Pro
   var receiverAddress = values[1];
   var senderUnspentList = JSON.parse(values[2]);
 
+  var amountThreshold = sendingColor!=1 ? 3 : tradingAmount;
+
   var availableUnspentList = senderUnspentList.filter((el) => {
-    if (el.amount >= tradingAmount && el.color == sendingColor) {
+    if (el.amount >= amountThreshold && el.color == sendingColor) {
       return true;
     }
   }).sort().reverse();
@@ -64,101 +69,53 @@ Promise.all([PromiseExec(cmdSenderAddress), PromiseExec(cmdReceiverAddress), Pro
     console.log("\n----------------------Information of the Transaction---------------------------\n");
     console.log("Sender Address: "+changeAddress);
     console.log("Receiver Address: "+receiverAddress);
-    console.log("Unspent Transaction: "+JSON.stringify(availableUnspentTx));
-    console.log("Fee Transactoin: "+JSON.stringify(availableFee));
+    console.log("Unspent Transaction: "+JSON.stringify(availableUnspentTx)+"\n");
+    console.log("Fee Transactoin: "+JSON.stringify(availableFee)+"\n");
 
-    if (sendingColor!=1 && feechangeAmount!=0 && changeAmount!=0) {
-      var Sender = [{
-        txid: availableUnspentTx.txid,
-        vout: availableUnspentTx.vout
-      },{
+    var Sender = [{
+      txid: availableUnspentTx.txid,
+      vout: availableUnspentTx.vout
+    }];
+
+    var Receiver = [];
+
+    if (sendingColor!=1){
+      Sender.push({
         txid: availableFee.txid,
         vout: availableFee.vout
-      }];
+      });
 
-      var Receiver = [{
-        address: changeAddress,
-        value: feechangeAmount,
-        color: 1
-      },{
-        address: changeAddress,
-        value: changeAmount,
-        color: sendingColor
-      },{
-        address: receiverAddress,
-        value: tradingAmount,
-        color: sendingColor
-      }];
-    } else if (sendingColor!=1 && feechangeAmount==0 && changeAmount ==0) {
-      var Sender = [{
-        txid: availableUnspentTx.txid,
-        vout: availableUnspentTx.vout
-      },{
-        txid: availableFee.txid,
-        vout: availableFee.vout
-      }];
+      if(changeAmount!=0){
+        Receiver.push({
+          address: changeAddress,
+          value: changeAmount,
+          color: sendingColor
+        });
+      }
 
-      var Receiver = [{
-        address: receiverAddress,
-        value: tradingAmount,
-        color: sendingColor
-      }];
-
-    } else if (sendingColor!=1 && feechangeAmount==0 && changeAmount!=0) {
-      var Sender = [{
-        txid: availableUnspentTx.txid,
-        vout: availableUnspentTx.vout
-      },{
-        txid: availableFee.txid,
-        vout: availableFee.vout
-      }];
-
-      var Receiver = [{
-        address: receiverAddress,
-        value: tradingAmount,
-        color: sendingColor
-      },{
-        address: changeAddress,
-        value: changeAmount,
-        color: sendingColor
-      }];
-
-    } else if (sendingColor!=1 && feechangeAmount!=0 && changeAmount==0) {
-      var Sender = [{
-        txid: availableUnspentTx.txid,
-        vout: availableUnspentTx.vout
-      },{
-        txid: availableFee.txid,
-        vout: availableFee.vout
-      }];
-
-      var Receiver = [{
-        address: changeAddress,
-        value: feechangeAmount,
-        color: 1
-      },{
-        address: receiverAddress,
-        value: tradingAmount,
-        color: sendingColor
-      }];
+      if(feechangeAmount!=0){
+        Receiver.push({
+          address: changeAddress,
+          value: feechangeAmount,
+          color: 1
+        });
+      }
 
     } else {
-      var Sender = [{
-        txid: availableUnspentTx.txid,
-        vout: availableUnspentTx.vout
-      }];
-
-      var Receiver = [{
-        address: changeAddress,
-        value: changeAmount-1,
-        color: sendingColor
-      },{
-        address: receiverAddress,
-        value: tradingAmount,
-        color: sendingColor
-      }];
+      if(changeAmount>=2){
+        Receiver.push({
+          address: changeAddress,
+          value: changeAmount-1,
+          color: sendingColor
+        });
+      }
     }
 
+    Receiver.push({
+      address: receiverAddress,
+      value: tradingAmount,
+      color: sendingColor
+    });
 
     var cmdRawTransaction = DockerCmd(sender, "createrawtransaction") + " '" + JSON.stringify(Sender) + "' '" + JSON.stringify(Receiver) + "'";
 
