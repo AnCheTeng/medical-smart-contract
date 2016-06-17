@@ -86,15 +86,15 @@ Promise.all([PromiseExec(cmdPatientAddress), PromiseExec(cmdDoctorUnspent)]).the
 
       console.log("\n------------------------newTx-----------------------------\n");
       console.log(newTx);
-      PromiseExec("sudo docker exec -i doctor src/gcoin-cli decoderawtransaction " + newTx).then((rawTx)=>{
+      PromiseExec("sudo docker exec -i doctor src/gcoin-cli decoderawtransaction " + newTx).then((rawTx) => {
 
         console.log("\n----------------------OP_RETURN---------------------------\n");
         console.log(rawTx);
-      },function(err){
+      }, function(err){
         console.log(err);
       });
 
-      PromiseExec("sudo docker exec -i doctor src/gcoin-cli signrawtransaction " + newTx).then((signedTx)=>{
+      PromiseExec("sudo docker exec -i doctor src/gcoin-cli signrawtransaction " + newTx).then((signedTx) => {
 
         console.log("\n----------------------Signed Transaction Hex---------------------------\n");
         console.log(signedTx);
@@ -102,25 +102,27 @@ Promise.all([PromiseExec(cmdPatientAddress), PromiseExec(cmdDoctorUnspent)]).the
         var signedTx = JSON.parse(signedTx);
         var signedTxHex = signedTx.hex;
 
-        PromiseExec("sudo docker exec -i doctor src/gcoin-cli decoderawtransaction " + signedTxHex).then((rawTx)=>{
-
+        PromiseExec("sudo docker exec -i doctor src/gcoin-cli decoderawtransaction " + signedTxHex).then((rawTx) => {
+          
           console.log("\n----------------------Signed OP_RETURN---------------------------\n");
           console.log(rawTx);
-        },function(err){
+        }, function(err){
           console.log(err);
         });
 
-        PromiseExec("sudo docker exec -i doctor src/gcoin-cli sendrawtransaction " + signedTxHex).then((txId)=>{
-	        console.log(txId);
-        },function(err){
+        PromiseExec("sudo docker exec -i doctor src/gcoin-cli sendrawtransaction " + signedTxHex).then((txId) => {
+	        
+          console.log("\n-------------------------final txId------------------------------\n");
+          console.log(txId);
+        }, function(err){
 	        console.log(err);
 	      });
 
-      },function(err){
+      }, function(err){
         console.log(err);
       });
 
-    },function(err){
+    }, function(err){
       console.log(err);
     });
 
