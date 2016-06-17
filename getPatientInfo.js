@@ -58,7 +58,7 @@ PromiseExec(DockerCmd("patient", "listunspent")).then(function(unspentList) {
 
 
 }).then(function(opList){
-  
+
   return rawPromise = opList.map(function(el) {
     return PromiseExec(DockerCmd("patient", "getrawtransaction ") + el).then(function(rawTx){
       return PromiseExec(DockerCmd("patient", "decoderawtransaction ") + rawTx);

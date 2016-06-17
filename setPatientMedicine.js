@@ -4,29 +4,29 @@ function PromiseExec(cmd) {
   return new Promise(function(resolve, reject) {
     exec(cmd, function(error, stdout, stderr) {
       if (stderr) {
-	      reject(stderr);
+        reject(stderr);
       } else {
         resolve(stdout);
       }
-    });   
+    });
   });
 }
 
 var cmdPatientAddress = "sudo docker exec -i patient src/gcoin-cli getfixedaddress";
 var cmdDoctorUnspent = "sudo docker exec -i doctor src/gcoin-cli listunspent";
 
-Promise.all([PromiseExec(cmdPatientAddress), PromiseExec(cmdDoctorUnspent)]).then(function(values){
+Promise.all([PromiseExec(cmdPatientAddress), PromiseExec(cmdDoctorUnspent)]).then(function(values) {
 
   var doctorUnspentTx = JSON.parse(values[1]);
   // console.log(doctorUnspentTx);
 
-  var availableUnspentTx = doctorUnspentTx.filter((el)=>{
-    if (el.amount == 4 && el.color == 2){
+  var availableUnspentTx = doctorUnspentTx.filter((el) => {
+    if (el.amount == 4 && el.color == 2) {
       return true;
     }
   });
 
-  var fee = doctorUnspentTx.filter((el)=>{
+  var fee = doctorUnspentTx.filter((el) => {
     if (el.amount == 1 && el.color == 1) {
       return true;
     }
@@ -34,7 +34,7 @@ Promise.all([PromiseExec(cmdPatientAddress), PromiseExec(cmdDoctorUnspent)]).the
 
   console.log("\n----------------------Address of patient---------------------------\n" + values[0]);
 
-  if (availableUnspentTx.length > 0 && fee.length > 0){
+  if (availableUnspentTx.length > 0 && fee.length > 0) {
 
     console.log("\n----------------------Unspent Transaction of Doctor---------------------------\n");
     console.log(availableUnspentTx[0]);
@@ -62,7 +62,7 @@ Promise.all([PromiseExec(cmdPatientAddress), PromiseExec(cmdDoctorUnspent)]).the
 
     var cmdRawTransaction = "sudo docker exec -i doctor src/gcoin-cli createrawtransaction '" + JSON.stringify(DoctorVin) + "' '" + JSON.stringify(PatientVout)+ "'";
 
-    PromiseExec(cmdRawTransaction).then(function(TxHex){
+    PromiseExec(cmdRawTransaction).then(function(TxHex) {
 
       console.log("\n------------------------TxHex-----------------------------\n");
       console.log(TxHex);
@@ -77,12 +77,12 @@ Promise.all([PromiseExec(cmdPatientAddress), PromiseExec(cmdDoctorUnspent)]).the
       var hexData = new Buffer(String.fromCharCode((new Buffer(hexData, 'hex').toString('ascii')).length)).toString('hex') + hexData;
 
       var newTx = front + hexData + tail;
-      
+
       return newTx;
 
-    }, function(err){
+    }, function(err) {
       console.log(err);
-    }).then(function(newTx){
+    }).then(function(newTx) {
 
       console.log("\n------------------------newTx-----------------------------\n");
       console.log(newTx);
@@ -90,7 +90,7 @@ Promise.all([PromiseExec(cmdPatientAddress), PromiseExec(cmdDoctorUnspent)]).the
 
         console.log("\n----------------------OP_RETURN---------------------------\n");
         console.log(rawTx);
-      }, function(err){
+      }, function(err) {
         console.log(err);
       });
 
@@ -106,7 +106,7 @@ Promise.all([PromiseExec(cmdPatientAddress), PromiseExec(cmdDoctorUnspent)]).the
           
           console.log("\n----------------------Signed OP_RETURN---------------------------\n");
           console.log(rawTx);
-        }, function(err){
+        }, function(err) {
           console.log(err);
         });
 
