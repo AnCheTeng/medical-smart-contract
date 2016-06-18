@@ -60,18 +60,16 @@ function DockerCmd(role) {
 router.route('/setMedicine/:diagnosis')
   .get(parseUrlencoded, function(request, response) {
     exec('node route/js/setPatientMedicine.js ' + request.params.diagnosis, function(error, stdout, stderr){
-      console.log(stdout);
+      response.send(stdout || request.params.diagnosis+" Succeed");
     });
-    response.send("setMedicine");
   });
 
 // 查藥單
-router.route('/getMedicine')
+router.route('/getMedicine/:msgType')
 	.get(parseUrlencoded, function(request, response) {
-    exec('node route/js/getPatientInfo.js', function(error, stdout, stderr){
-      console.log(stdout);
+    exec('node route/js/getPatientInfo.js ' + request.params.msgType, function(error, stdout, stderr){
+      response.send(stdout || []);
     });
-	  response.send("getMedicine");
 	});
 
 // 領藥

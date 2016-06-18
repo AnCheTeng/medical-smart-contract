@@ -1,7 +1,7 @@
 var exec = require('child_process').exec;
-console.log("==EXEC== getPatientInfo.js")
+//console.log("==EXEC== getPatientInfo.js", process.argv[2] || "")
 
-var msgCategory = 2;
+var msgCategory = process.argv[2] || 2;
 var person = "patient";
 
 function PromiseExec(cmd) {
@@ -57,7 +57,6 @@ PromiseExec(DockerCmd("patient", "listunspent")).then(function(unspentList) {
     })
   }
 
-
 }).then(function(opList){
 
   return rawPromise = opList.map(function(el) {
@@ -69,6 +68,13 @@ PromiseExec(DockerCmd("patient", "listunspent")).then(function(unspentList) {
 }).then(function(rawTxTxList){
 
   return Promise.all(rawTxTxList).then(function(decodedTxList){
+    var decodedTxList = decodedTxList.filter(function(el) {
+      el = JSON.parse(el);
+      if (el.vout.length > 1 && el.vout[1].scriptPubKey.asm.indexOf('OP_RETURN') > -1) {
+        var scriptPubKeyData = el.vout[1].scriptPubKey;
+        return true;
+      }
+    });
     return msgList = decodedTxList.map(function(el) {
       el = JSON.parse(el);
       var op_return_msg = el.vout[1].scriptPubKey.asm;
@@ -77,13 +83,11 @@ PromiseExec(DockerCmd("patient", "listunspent")).then(function(unspentList) {
   }, ErrorHandler);
 
 }).then(function(msgList) {
-
   var finalMsgList = msgList.map(function(el) {
     var base64Data = new Buffer(el, 'hex').toString('ascii');
     var rawData = new Buffer(base64Data, 'base64').toString('ascii');
-
     return rawData;
   });
 
-  console.log(finalMsgList);
+  console.log(finalMsgList || []);
 });

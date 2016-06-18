@@ -21,13 +21,13 @@ Promise.all([PromiseExec(cmdPatientAddress), PromiseExec(cmdDoctorUnspent)]).the
   var doctorUnspentTx = JSON.parse(values[1]);
   // console.log(doctorUnspentTx);
 
-  var availableUnspentTx = doctorUnspentTx.filter((el) => {
+  var availableUnspentTx = doctorUnspentTx.filter(function(el) {
     if (el.amount == 4 && el.color == 2) {
       return true;
     }
   });
 
-  var fee = doctorUnspentTx.filter((el) => {
+  var fee = doctorUnspentTx.filter(function(el) {
     if (el.amount == 1 && el.color == 1) {
       return true;
     }
