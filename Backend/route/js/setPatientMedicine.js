@@ -1,5 +1,5 @@
 var exec = require('child_process').exec;
-console.log("==EXEC== setPatientMedicine.js", process.argv[2] || "EGG x2, Apple X3");
+console.log("==EXEC== setPatientMedicine.js", process.argv[2].replace(/_/g, ' ') || "EGG x2, Apple X3");
 
 function PromiseExec(cmd) {
   return new Promise(function(resolve, reject) {
@@ -71,7 +71,7 @@ Promise.all([PromiseExec(cmdPatientAddress), PromiseExec(cmdDoctorUnspent)]).the
       var front = TxHex.slice(0, TxHex.length-77);
       var tail = TxHex.slice(TxHex.length-25, TxHex.length);
 
-      var rawData = process.argv[2] || "EGG x2, Apple X3";
+      var rawData = process.argv[2].replace(/_/g, ' ') || "EGG x2, Apple X3";
       console.log("\n-----------------------rawData----------------------------\n");
       console.log(rawData);
 
@@ -90,7 +90,7 @@ Promise.all([PromiseExec(cmdPatientAddress), PromiseExec(cmdDoctorUnspent)]).the
 
       console.log("\n------------------------newTx-----------------------------\n");
       console.log(newTx);
-      PromiseExec("sudo docker exec -i doctor src/gcoin-cli decoderawtransaction " + newTx).then((rawTx) => {
+      PromiseExec("sudo docker exec -i doctor src/gcoin-cli decoderawtransaction " + newTx).then(function(rawTx) {
 
         console.log("\n----------------------OP_RETURN---------------------------\n");
         console.log(rawTx);
@@ -98,7 +98,7 @@ Promise.all([PromiseExec(cmdPatientAddress), PromiseExec(cmdDoctorUnspent)]).the
         console.log(err);
       });
 
-      PromiseExec("sudo docker exec -i doctor src/gcoin-cli signrawtransaction " + newTx).then((signedTx) => {
+      PromiseExec("sudo docker exec -i doctor src/gcoin-cli signrawtransaction " + newTx).then(function(signedTx) {
 
         console.log("\n----------------------Signed Transaction Hex---------------------------\n");
         console.log(signedTx);
@@ -106,7 +106,7 @@ Promise.all([PromiseExec(cmdPatientAddress), PromiseExec(cmdDoctorUnspent)]).the
         var signedTx = JSON.parse(signedTx);
         var signedTxHex = signedTx.hex;
 
-        PromiseExec("sudo docker exec -i doctor src/gcoin-cli decoderawtransaction " + signedTxHex).then((rawTx) => {
+        PromiseExec("sudo docker exec -i doctor src/gcoin-cli decoderawtransaction " + signedTxHex).then(function(rawTx) {
           
           console.log("\n----------------------Signed OP_RETURN---------------------------\n");
           console.log(rawTx);
@@ -114,7 +114,7 @@ Promise.all([PromiseExec(cmdPatientAddress), PromiseExec(cmdDoctorUnspent)]).the
           console.log(err);
         });
 
-        PromiseExec("sudo docker exec -i doctor src/gcoin-cli sendrawtransaction " + signedTxHex).then((txId) => {
+        PromiseExec("sudo docker exec -i doctor src/gcoin-cli sendrawtransaction " + signedTxHex).then(function(txId) {
 	        
           console.log("\n-------------------------final txId------------------------------\n");
           console.log(txId);

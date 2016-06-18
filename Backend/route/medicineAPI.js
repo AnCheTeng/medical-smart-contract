@@ -22,9 +22,9 @@ router.route('/')
 router.route('/API-list')
   .get(parseUrlencoded, function(request, response) {
   	var result = '<title>API-list</title><h1 style="color:#ad604c;">API list</h1>';
-  	result += ('<h3 style="color:#6f502c;"> setMedicine <a href="setMedicine" style="color:green;">GO!<a> </h3>');
-  	result += ('<h3 style="color:#6f502c;"> getMedicine <a href="getMedicine" style="color:green;">GO!<a> </h3>');
-  	result += ('<h3 style="color:#6f502c;"> takeMedicine <a href="takeMedicine" style="color:green;">GO!<a> </h3>');
+  	result += ('<h3 style="color:#6f502c;"> setMedicine <a href="setMedicine/Applex3" style="color:green;">GO!<a> </h3>');
+  	result += ('<h3 style="color:#6f502c;"> getMedicine <a href="getMedicine/3" style="color:green;">GO!<a> </h3>');
+  	result += ('<h3 style="color:#6f502c;"> takeMedicine <a href="takeMedicine/2/2" style="color:green;">GO!<a> </h3>');
   	response.send(result);
   });
 
@@ -50,14 +50,15 @@ function DockerCmd(role) {
   var cmd = cmdPrefix + role + cmdSrcPath;
   for (var i = 1; i < arguments.length; i++)
     cmd += (arguments[i] + ' ');
-  console.log("==EXEC==", cmd)
+  console.log(' [Server] ' + cmd)
   return cmd;
 }
 
 // 開藥單
 router.route('/setMedicine/:diagnosis')
   .get(parseUrlencoded, function(request, response) {
-    exec('node route/js/setPatientMedicine.js ' + request.params.diagnosis, function(error, stdout, stderr){
+    console.log(' [Server] node route/js/setPatientMedicine.js ' + request.params.diagnosis)
+    exec('node route/js/setPatientMedicine.js ' + request.params.diagnosis.replace(/ /g, '_'), function(error, stdout, stderr){
       response.send(stdout || "<h3>Diagnosis Failed:</h3>" + request.params.diagnosis);
     });
   });
@@ -65,6 +66,7 @@ router.route('/setMedicine/:diagnosis')
 // 查藥單
 router.route('/getMedicine/:msgType')
 	.get(parseUrlencoded, function(request, response) {
+    console.log(' [Server] node route/js/getPatientInfo.js ' + request.params.msgType);
     exec('node route/js/getPatientInfo.js ' + request.params.msgType, function(error, stdout, stderr){
       response.send(stdout || []);
     });
@@ -73,24 +75,27 @@ router.route('/getMedicine/:msgType')
 // 領藥
 router.route('/takeMedicine/:amount/:color')
 	.get(parseUrlencoded, function(request, response) {
-    var amount = request.params.amount,
-        color = request.params.color,
+    var amount = request.params.amount || 2,
+        color = request.params.color || 2,
         sender = request.query.sender || "",
         receiver = request.query.receiver || "";
     var argument = amount + ' ' + color + ' ' + sender + ' ' + receiver;
-    console.log('node route/js/trade.js ' + argument)
+    console.log(' [Server] node route/js/trade.js '+argument)
 	  exec('node route/js/trade.js ' + argument, function(error, stdout, stderr){
       response.send(stdout || []);
     });
 	});
 
 // 挖礦
-router.route('/mint/:role/:amount/:type')
+router.route('/mint/:amount/:type')
 	.get(parseUrlencoded, function(req, res) {
-    var role = req.params.role, type = req.params.type, amount = req.params.amount;
+    var role = req.query.role || 'doctor', type = req.params.type, amount = req.params.amount;
     var cmd = DockerCmd(role, cmdMint, amount, type);
-    var str = role + " mint type " + type + " (amount: " + amount + ")";
-	  res.send(str);
+    exec(cmd, function(error, stdout, stderr){
+      var str = role + " mint type " + type + " (amount: " + amount + ")\n";
+      str += (stdout || []);
+      res.send(str);
+    });
 	});
 
 module.exports = router;

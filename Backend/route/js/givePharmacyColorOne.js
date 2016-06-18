@@ -20,7 +20,7 @@ Promise.all([PromiseExec(cmdPharmacyAddress), PromiseExec(cmdDoctorUnspent)]).th
   var doctorUnspentTx = JSON.parse(values[1]);
 
   var availableUnspentTx = doctorUnspentTx.filter((el) => {
-    if (el.amount >= 1 && el.color == 1) {
+    if (el.amount >= 5 && el.color == 1) {
       return true;
     }
   });
@@ -39,7 +39,7 @@ Promise.all([PromiseExec(cmdPharmacyAddress), PromiseExec(cmdDoctorUnspent)]).th
 
     var PharmacyVout = [{
       address: values[0],
-      value: 99,
+      value: 4,
       color: 1
     }];
 

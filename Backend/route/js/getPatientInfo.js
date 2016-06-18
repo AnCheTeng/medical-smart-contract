@@ -1,7 +1,7 @@
 var exec = require('child_process').exec;
 //console.log("==EXEC== getPatientInfo.js", process.argv[2] || "")
 
-var msgCategory = process.argv[2] || 2;
+var msgCategory = process.argv[2] || 3;
 var person = "patient";
 
 function PromiseExec(cmd) {

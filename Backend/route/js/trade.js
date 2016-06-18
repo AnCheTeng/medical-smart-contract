@@ -60,8 +60,6 @@ Promise.all([PromiseExec(cmdSenderAddress), PromiseExec(cmdReceiverAddress), Pro
     }
   }).sort();
 
-  console.log(feeList)
-
   if (availableUnspentList.length > 0 && availableUnspentList[0]!=feeList[0]) {
 
     var availableUnspentTx = availableUnspentList[0];
@@ -72,8 +70,8 @@ Promise.all([PromiseExec(cmdSenderAddress), PromiseExec(cmdReceiverAddress), Pro
     var feechangeAmount = availableFee.amount - 1;
 
     console.log("\n----------------------Information of the Transaction---------------------------\n");
-    console.log("Sender Address: "+changeAddress);
-    console.log("Receiver Address: "+receiverAddress);
+    console.log("Sender Address: "+changeAddress+"\n");
+    console.log("Receiver Address: "+receiverAddress+"\n");
     console.log("Unspent Transaction: "+JSON.stringify(availableUnspentTx)+"\n");
     console.log("Fee Transactoin: "+JSON.stringify(availableFee)+"\n");
 
@@ -134,13 +132,13 @@ Promise.all([PromiseExec(cmdSenderAddress), PromiseExec(cmdReceiverAddress), Pro
         PromiseExec(DockerCmd(sender, "decoderawtransaction ") + signedTxHex).then((rawTx) => {
 
           console.log("\n----------------------Signed Transaction---------------------------\n");
-          console.log(rawTx);
+          console.log(rawTx+"\n");
         }, ErrorHandler);
 
 
         PromiseExec(DockerCmd(sender, "sendrawtransaction ") + signedTxHex).then((txId) => {
           console.log("\n----------------------Successed Transaction ID---------------------------\n");
-          console.log(txId);
+          console.log(txId+"\n");
         }, ErrorHandler);
 
       }, ErrorHandler);
