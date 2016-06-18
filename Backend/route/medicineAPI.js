@@ -45,8 +45,6 @@ function PromiseExec(cmd) {
 var cmdPrefix = "sudo docker exec -i ";
 var cmdSrcPath = " src/gcoin-cli ";
 var cmdMint = "mint";
-var cmdAddress = "getfixedaddress";
-var cmdUnspent = "listunspent";
 
 function DockerCmd(role) {
   var cmd = cmdPrefix + role + cmdSrcPath;
@@ -60,7 +58,7 @@ function DockerCmd(role) {
 router.route('/setMedicine/:diagnosis')
   .get(parseUrlencoded, function(request, response) {
     exec('node route/js/setPatientMedicine.js ' + request.params.diagnosis, function(error, stdout, stderr){
-      response.send(stdout || request.params.diagnosis+" Succeed");
+      response.send(stdout || "<h3>Diagnosis Failed:</h3>" + request.params.diagnosis);
     });
   });
 
@@ -73,9 +71,17 @@ router.route('/getMedicine/:msgType')
 	});
 
 // 領藥
-router.route('/takeMedicine')
+router.route('/takeMedicine/:amount/:color')
 	.get(parseUrlencoded, function(request, response) {
-	  response.send("takeMedicine");
+    var amount = request.params.amount,
+        color = request.params.color,
+        sender = request.query.sender || "",
+        receiver = request.query.receiver || "";
+    var argument = amount + ' ' + color + ' ' + sender + ' ' + receiver;
+    console.log('node route/js/trade.js ' + argument)
+	  exec('node route/js/trade.js ' + argument, function(error, stdout, stderr){
+      response.send(stdout || []);
+    });
 	});
 
 // 挖礦

@@ -1,12 +1,13 @@
 var exec = require('child_process').exec;
+console.log("==EXEC==", process.argv)
 
-var sender = process.argv[2] || "patient";
-var receiver = process.argv[3] || "pharmacy";
+var sender = process.argv[4] || "patient";
+var receiver = process.argv[5] || "pharmacy";
 // var sender = "pharmacy";
 // var receiver = "patient";
 
-var sendingColor = parseInt(process.argv[5]) || 2;
-var tradingAmount = parseInt(process.argv[4]) || 2;
+var sendingColor = parseInt(process.argv[3]) || 2;
+var tradingAmount = parseInt(process.argv[2]) || 2;
 var sendingAmount = null;
 var changeAmount = null;
 var feechangeAmount = null;
