@@ -36,7 +36,7 @@ $(document).ready(function() {
     var OP_RETURN = $("textarea").val();
     if (OP_RETURN != "") {
       swal({
-        title: "Send to Blockchain?",
+        title: "Send to Gcoin Blockchain?",
         text: OP_RETURN,
         type: "warning",
         showCancelButton: true,
@@ -44,7 +44,7 @@ $(document).ready(function() {
         confirmButtonText: "Yes, send it!",
         closeOnConfirm: false
       }, function() {
-        swal("Send to Blockchain!", "Your diagnosis has been sent!", "success");
+        swal("Send to Gcoin Blockchain!", "Your diagnosis has been sent!", "success");
         $("textarea").val("");
         $('#submit').prop('disabled', true);
       });
