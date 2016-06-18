@@ -3,10 +3,10 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
-  <script type="text/javascript" src="http://netdna.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
   <link href="http://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
   <link href="http://pingendo.github.io/pingendo-bootstrap/themes/default/bootstrap.css" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" type="text/css" href="css/sweetalert.css">
+
 </head>
 
 <body>
@@ -25,10 +25,13 @@
       <div class="collapse navbar-collapse" id="navbar-ex-collapse">
         <ul class="nav navbar-nav navbar-right">
           <li class="active">
-            <a href="#">Home</a>
+            <a href="#" class="btn">Hospital</a>
           </li>
           <li>
-            <a href="#">GitHub</a>
+              <a href="#" class="btn" >Pharmacy</a>
+          </li>
+          <li>
+            <a href="https://github.com/AnCheTeng/medical-smart-contract" class="btn" >GitHub</a>
           </li>
         </ul>
       </div>
@@ -42,97 +45,97 @@
         <h1 class="text-center">Hello, Doctor!</h1>
         <p> ... </p>
         <blockquote>
-          <p>An apple a day keeps the doctor away</p>
+          <p>An apple a day keeps you away</p>
           <footer>Someone famous</footer>
         </blockquote>
       </div>
     </div>
   </div>
 
-  <div class="container">
-    <hr>
-  </div>
+  <div class="container"><hr></hr></div>
 
   <div class="section">
     <div class="container">
+      <div class="row">
+        <div class="col-md-12">
+          <h1>Patient Name : Alice</h1>
+          <ul>
+            <li><h4>History and Physical conducted on: October 1, 2015</h4></li>
+            <li><h4>Chief Complaint: Abdominal pain</h4></li>
+          </ul>
+          <h3>History of Present Illness (HPI)</h3>
+          <p>Mr. H is a 30 year old white male with a past medical history significant for an MI and depression who presents today complaining of sharp, epigastric abdominal pain of 3-4 months duration. The abdominal pain has been gradually worsening over the past 3-4 months. The pain has not changed or worsened acutely; Mr. H seeks care for the pain at this time because he is now covered by Medicare. The pain is located in the epigastric region and left upper quadrant of the abdomen. It does not radiate. The pain is relatively constant throughout the day and night but does vary in severity. Mr. H rates the pain as 6/10 at its worst. Mr. H describes the pain as a “sharp, burning” pain. He has not tried taking any medicines to relieve the pain. The pain is not alleviated with rest. Mr. H thinks the pain may be aggravated by throwing the football, but he has also experienced the pain independent of playing football or exerting himself. The pain is not associated with food or eating, although Mr. H does endorse occasional heartburn. Mr. H thinks the pain may at times be worse on laying down, and it does wake him up at night. Mr. H denies any abdominal trauma or injury. He endorses a 5lb weight loss over the past 3-4 months, decreased appetite, and fatigue. He has experienced some drenching night sweats, requiring him to change his shirt but not his sheets. He describes a “lump in his throat” with associated dysphagia. He has experienced some nausea with the abdominal pain but has not vomited. He endorses constipation. He endorses bloody stools with some bowel movements. The blood is dark red in color and is not bright red. There is a sufficient amount of blood to turn the toilet water red. Mr. H does not know how many times per week he experiences this bleeding. He has not seen a bloody bowel movement in the past week.</p>
+          <br />
+        </div>
+      </div>
+
       <div class="row">
         <div class="col-md-6 text-center">
           <h1>Diagnosis</h1>
-          <form role="form">
+          <form role="form" class="form-horizontal" id="notEmptyForm" >
             <div class="form-group has-feedback">
-              <textarea name="medicineinfo" rows="10" required="required" style="width:100%;"></textarea>
+              <textarea id="opr" class="form-control" name="medicineinfo" rows="15" required="required" style="width:100%;"></textarea>
               <br>
             </div>
           </form>
-          <a class="btn btn-lg btn-primary">Submit</a>
+          <button class="btn btn-lg btn-primary" id="submit" disabled>Submit</button>
         </div>
         <div class="col-md-6">
-          <div class="row">
-            <br>
-            <div class="col-md-12 text-center">
-              <ul class="nav nav-justified nav-pills">
-                <li>
-                  <a href="#"><i class="fa fa-star fa-fw"></i>History</a>
-                </li>
-                <li>
-                  <a href="#">Remain</a>
-                </li>
-                <li>
-                  <a href="#">Error</a>
-                </li>
-              </ul>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-md-12">
-              <br>
-              <div class="text-left well well-lg">
-                <h2>Heading</h2>
-                <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui.</p>
-              </div>
-              <ul class="pager">
-                <li>
-                  <a href="#">←  Prev</a>
-                </li>
-                <li>
-                  <a href="#">Next  →</a>
-                </li>
-              </ul>
-            </div>
-          </div>
+          <img src="https://ununsplash.imgix.net/reserve/RONyPwknRQOO3ag4xf3R_Kinsey.jpg?w=1024&amp;q=50&amp;fm=jpg&amp;s=c8e85e7825f6c74ff13321833a9bc28d" class="img-responsive img-thumbnail" style="margin:50px 0px 20px">
         </div>
       </div>
     </div>
   </div>
 
-  <div class="container">
-    <hr>
-  </div>
+  <div class="container"><hr></hr></div>
 
-  <div class="section">
+  <div class="section  text-center">
     <div class="container">
+      <h1>Medicine Record</h1>
       <div class="row">
-        <div class="col-md-7">
-          <h1>Patient Name</h1>
-          <h3>A subtitle</h3>
-          <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu,
-            pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium. Integer tincidunt.
-            Cras dapibus. Vivamus elementum semper nisi.</p>
+        <br>
+        <div class="col-md-12 text-center">
+          <ul class="nav nav-justified nav-pills">
+            <li>
+              <a class="btn btn-lg" id="history"><i class="fa fa-star fa-fw"></i>History</a>
+            </li>
+            <li>
+              <a class="btn btn-lg" id="remain">Remain</a>
+            </li>
+            <li>
+              <a class="btn btn-lg" id="error">Error</a>
+            </li>
+          </ul>
         </div>
-        <div class="col-md-5">
-          <img src="https://ununsplash.imgix.net/reserve/RONyPwknRQOO3ag4xf3R_Kinsey.jpg?w=1024&amp;q=50&amp;fm=jpg&amp;s=c8e85e7825f6c74ff13321833a9bc28d" class="img-responsive img-thumbnail">
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <br>
+          <div class="text-left well well-lg" style="background-color: #e3f9ff;">
+            <h2 id="date">Date</h2>
+            <p id="view-content">I'm content. Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui.</p>
+          </div>
+          <ul class="pager">
+            <li>
+              <a class="btn btn-lg" id="prev">←  Prev</a>
+            </li>
+            <li>
+              <a class="btn btn-lg" id="next">Next  →</a>
+            </li>
+          </ul>
         </div>
       </div>
     </div>
   </div>
+
   <footer class="section section-primary">
     <div class="container">
       <div class="row">
         <div class="col-sm-6">
-          <h1>Footer header</h1>
-          <p>Lorem ipsum dolor sit amet, consectetur adipisici elit,
-            <br>sed eiusmod tempor incidunt ut labore et dolore magna aliqua.
-            <br>Ut enim ad minim veniam, quis nostrud</p>
+          <h1>Powered by gcoin</h1>
+          <p>GCOIN blockchain protocol is an open-source software.
+            <br>GCOIN is built for next-generation digital infrastructure, the distributed ledger.
+            <br>For more information, see <a href="http://g-coin.org/" style="color: #a0f2fd;">Gcoin</a>, or go to the <a href="https://github.com/OpenNetworking/gcoin-community" style="color: #a0f2fd;">GitHub</a>.</p>
         </div>
         <div class="col-sm-6">
           <p class="text-info text-right">
@@ -141,18 +144,18 @@
           </p>
           <div class="row">
             <div class="col-md-12 hidden-lg hidden-md hidden-sm text-left">
-              <a href="#"><i class="fa fa-3x fa-fw fa-instagram text-inverse"></i></a>
-              <a href="#"><i class="fa fa-3x fa-fw fa-twitter text-inverse"></i></a>
-              <a href="#"><i class="fa fa-3x fa-fw fa-facebook text-inverse"></i></a>
-              <a href="#"><i class="fa fa-3x fa-fw fa-github text-inverse"></i></a>
+              <a href="https://github.com/OpenNetworking/gcoin-community"><i class="fa fa-3x fa-fw fa-instagram text-inverse"></i></a>
+              <a href="https://github.com/OpenNetworking/gcoin-community"><i class="fa fa-3x fa-fw fa-twitter text-inverse"></i></a>
+              <a href="https://www.facebook.com/groups/1273849462632302/?fref=ts"><i class="fa fa-3x fa-fw fa-facebook text-inverse"></i></a>
+              <a href="https://github.com/OpenNetworking/gcoin-community"><i class="fa fa-3x fa-fw fa-github text-inverse"></i></a>
             </div>
           </div>
           <div class="row">
             <div class="col-md-12 hidden-xs text-right">
-              <a href="#"><i class="fa fa-3x fa-fw fa-instagram text-inverse"></i></a>
-              <a href="#"><i class="fa fa-3x fa-fw fa-twitter text-inverse"></i></a>
-              <a href="#"><i class="fa fa-3x fa-fw fa-facebook text-inverse"></i></a>
-              <a href="#"><i class="fa fa-3x fa-fw fa-github text-inverse"></i></a>
+              <a href="https://github.com/OpenNetworking/gcoin-community"><i class="fa fa-3x fa-fw fa-instagram text-inverse"></i></a>
+              <a href="https://github.com/OpenNetworking/gcoin-community"><i class="fa fa-3x fa-fw fa-twitter text-inverse"></i></a>
+              <a href="https://www.facebook.com/groups/1273849462632302/?fref=ts"><i class="fa fa-3x fa-fw fa-facebook text-inverse"></i></a>
+              <a href="https://github.com/OpenNetworking/gcoin-community"><i class="fa fa-3x fa-fw fa-github text-inverse"></i></a>
             </div>
           </div>
         </div>
@@ -160,7 +163,12 @@
     </div>
   </footer>
 
-
+  <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+  <script type="text/javascript" src="http://netdna.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+  <script type="text/javascript" src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.7/jquery.validate.min.js"></script>
+  <script src="lib/sweetalert.min.js"></script>
+  <script src="lib/sweetalert-dev.js"></script>
+  <script src='js/main.js'></script>
 </body>
 
 </html>
