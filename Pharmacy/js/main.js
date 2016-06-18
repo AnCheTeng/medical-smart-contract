@@ -58,6 +58,7 @@ $(document).ready(function() {
       closeOnConfirm: false
     }, function() {
       swal("Success!", "Here is your prescription!", "success");
+      $("#remain").trigger('click');
     });
   });
 })
