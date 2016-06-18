@@ -1,19 +1,35 @@
-var histArray = ["An apple a day keeps you away", "Medicine-History-1", "Medicine-History-2", "Medicine-History-3", ]
-var remArray = ["Medicine-recipe-1", "Medicine-recipe-2", "Medicine-recipe-3", "Medicine-recipe-4", "Medicine-recipe-5"];
-var errArray = ["Error-1", "Error-2", "Error-3", "Error-4", "Error-5"];
-
-var InfoArray = histArray;
+var url = "http://140.112.41.157:10001";
+var InfoArray = [""];
 var currentView = 0;
-var viewDate = "Date";
+var viewDate = "No. ";
 
 $(document).ready(function() {
 
   var changeView = function() {
     $("#view-content").text(InfoArray[currentView]);
-    $("date").text(viewDate);
+    $("#date").text(viewDate + currentView);
   };
 
   changeView();
+
+  var getMedicine = function(msgType) {
+    swal({
+      title: "Fetch data from Gcoin",
+      text: "Please wait for a few second!",
+      type: "info",
+      showCancelButton: true,
+      closeOnConfirm: false,
+      showLoaderOnConfirm: true,
+    }, function() {
+      $.get(url + "/medicineAPI/getMedicine/" + msgType, (response) => {
+        response = response.replace(/\'/g, '"');
+        InfoArray = JSON.parse(response);
+        currentView = 0;
+        changeView();
+        swal("Get prescription!", "", "success");
+      });
+    });
+  };
 
   $('#notEmptyForm').validate({
     rules: {
@@ -42,39 +58,44 @@ $(document).ready(function() {
         showCancelButton: true,
         confirmButtonColor: "#DD6B55",
         confirmButtonText: "Yes, send it!",
-        closeOnConfirm: false
-      }, function() {
-        swal("Send to Gcoin Blockchain!", "Your diagnosis has been sent!", "success");
-        $("textarea").val("");
-        $('#submit').prop('disabled', true);
+        closeOnConfirm: false,
+        closeOnCancel: false,
+        showLoaderOnConfirm: true,
+      }, function(isConfirm) {
+        if (isConfirm) {
+          $.get(encodeURI(url + "/medicineAPI/setMedicine/" + OP_RETURN), (response) => {
+            swal("Send to Gcoin Blockchain!","", "success");
+            $("textarea").val("");
+            $('#submit').prop('disabled', true);
+          });
+          // swal("Deleted!", "Your imaginary file has been deleted.", "success");
+        } else {
+          swal("Cancelled", "Your imaginary file is safe :)", "error");
+        }
+
       });
     } else {
       sweetAlert("Oops...", "Diagnose cannot be empty!", "error");
     }
-
   });
 
   $("#history").on('click', function() {
-    InfoArray = histArray;
-    currentView = 0;
-    changeView();
+    getMedicine(1);
   });
 
   $("#remain").on('click', function() {
-    InfoArray = remArray;
-    currentView = 0;
-    changeView();
+    getMedicine(3);
   });
 
   $("#error").on('click', function() {
-    InfoArray = errArray;
-    currentView = 0;
-    changeView();
+    getMedicine(2);
   });
 
   $("#prev").on('click', function() {
     if (currentView > 0) {
       currentView -= 1;
+    } else {
+      currentView = InfoArray.length - 1;
     }
     changeView();
   });
@@ -82,6 +103,8 @@ $(document).ready(function() {
   $("#next").on('click', function() {
     if (currentView < InfoArray.length - 1) {
       currentView += 1;
+    } else {
+      currentView = 0;
     }
     changeView();
   });
