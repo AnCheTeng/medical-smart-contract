@@ -3,7 +3,27 @@
   "version": "0.0.1",
   "dependencies": {
     "express": "~4.13.4",
-    "body-parser": "~1.15.0"
+    "body-parser": "~1.15.0",
+    "cool-ascii-faces": "*",
+    "request": "*"
   },
-  "description": "Medical-Smart-Contract"
+  "description": "Medical-Smart-Contract",
+  "main": "server.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "engines": {
+    "node": "4.4.5"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/AnCheTeng/medical-smart-contract"
+  },
+  "keywords": [
+    "node",
+    "express",
+    "medicine",
+    "blockchain"
+  ],
+  "license": "MIT"
 }
