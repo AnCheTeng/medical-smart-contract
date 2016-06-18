@@ -1,41 +1,53 @@
-var histArray = ["An apple a day keeps you away", "Medicine-History-1", "Medicine-History-2", "Medicine-History-3", ]
-var remArray = ["Medicine-recipe-1", "Medicine-recipe-2", "Medicine-recipe-3", "Medicine-recipe-4", "Medicine-recipe-5"];
-var errArray = ["Error-1", "Error-2", "Error-3", "Error-4", "Error-5"];
-
-var InfoArray = histArray;
+var url = "http://140.112.41.157:10001";
+var InfoArray = [""];
 var currentView = 0;
-var viewDate = "Date";
+var viewDate = "No. ";
 
 $(document).ready(function() {
 
   var changeView = function() {
     $("#view-content").text(InfoArray[currentView]);
-    $("date").text(viewDate);
+    $("#date").text(viewDate+currentView);
   };
 
   changeView();
 
+  var getMedicine = function(msgType) {
+    swal({
+      title: "Fetch data from Gcoin",
+      text: "Please wait for a few second!",
+      type: "info",
+      showCancelButton: true,
+      closeOnConfirm: false,
+      showLoaderOnConfirm: true,
+    }, function() {
+      $.get(url + "/medicineAPI/getMedicine/"+msgType, (response) => {
+        response = response.replace(/\'/g, '"');
+        InfoArray = JSON.parse(response);
+        currentView = 0;
+        changeView();
+        swal("Get prescription!","", "success");
+      });
+    });
+  };
+
   $("#history").on('click', function() {
-    InfoArray = histArray;
-    currentView = 0;
-    changeView();
+    getMedicine(1);
   });
 
   $("#remain").on('click', function() {
-    InfoArray = remArray;
-    currentView = 0;
-    changeView();
+    getMedicine(3);
   });
 
   $("#error").on('click', function() {
-    InfoArray = errArray;
-    currentView = 0;
-    changeView();
+    getMedicine(2);
   });
 
   $("#prev").on('click', function() {
     if (currentView > 0) {
       currentView -= 1;
+    } else {
+      currentView = InfoArray.length-1;
     }
     changeView();
   });
@@ -43,22 +55,30 @@ $(document).ready(function() {
   $("#next").on('click', function() {
     if (currentView < InfoArray.length - 1) {
       currentView += 1;
+    } else {
+      currentView = 0;
     }
     changeView();
   });
 
   $("#take").on('click', function() {
     swal({
-      title: "Take the prescription from Gcoin Blockchain?",
+      title: "Take the prescription from\nGcoin Blockchain?",
       text: "You have to take this medicine after each meal.\nTake one tablet three times a day.\nTake the painkiller only when you need it. ",
       type: "warning",
       showCancelButton: true,
       confirmButtonColor: "#DD6B55",
       confirmButtonText: "Yes, take it!",
-      closeOnConfirm: false
+      closeOnConfirm: false,
+      showLoaderOnConfirm: true,
     }, function() {
-      swal("Success!", "Here is your prescription!", "success");
-      $("#remain").trigger('click');
+      $.get(url + "/medicineAPI/takeMedicine/2/2", (response) => {
+        swal("Success! Here is your prescription!", "", "success");
+        console.log(response);
+      });
+      $.get(url + "/medicineAPI/takeMedicine/1/1?sender=pharmacy?receiver=patient", (response) => {
+        console.log(response);
+      });
     });
   });
 })
