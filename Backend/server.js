@@ -1,11 +1,7 @@
 // npm install
 var express = require('express');
 
-// DB Schema
-// var Ambulance = require('./model/Ambulance');
-
-// route
-var ambulance_route = require('./route/ambulance')
+var medicineRoute = require('./route/medicineAPI')
 
 var app = express();
 
@@ -18,9 +14,10 @@ app.all('*', function(req, res, next) {
   next();
 });
 
-app.use(express.static('../frontend'));
+app.use("/Hospital", express.static('../Hospital'));
+app.use("/Pharmacy", express.static('../Pharmacy'));
 
-app.use('/ambulance', ambulance_route);
+app.use('/medicineAPI', medicineRoute);
 
 app.get('/', function(request, response) {
   console.log('Hello world!');
