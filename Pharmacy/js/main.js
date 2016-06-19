@@ -1,4 +1,5 @@
-var url = "http://140.112.41.157:10001";
+var url = "http://140.112.41.157:5678";
+// var url = ""
 var InfoArray = [""];
 var currentView = 0;
 var viewDate = "No. ";
@@ -22,6 +23,7 @@ $(document).ready(function() {
       showLoaderOnConfirm: true,
     }, function() {
       $.get(url + "/medicineAPI/getMedicine/"+msgType, (response) => {
+        console.log(response);
         response = response.replace(/\'/g, '"');
         InfoArray = JSON.parse(response);
         currentView = 0;
@@ -76,7 +78,28 @@ $(document).ready(function() {
         swal("Success! Here is your prescription!", "", "success");
         console.log(response);
       });
-      $.get(url + "/medicineAPI/takeMedicine/1/1?sender=pharmacy?receiver=patient", (response) => {
+      $.get(url + "/medicineAPI/takeMedicine/1/1?sender=pharmacy&receiver=patient", (response) => {
+        console.log(response);
+      });
+    });
+  });
+
+  $("#ers").on('click', function() {
+    swal({
+      title: "Push the prescription error to\nGcoin Blockchain?",
+      text: "Please tell the doctor who prescribe the medicine.",
+      type: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#DD6B55",
+      confirmButtonText: "Yes, take it!",
+      closeOnConfirm: false,
+      showLoaderOnConfirm: true,
+    }, function() {
+      $.get(url + "/medicineAPI/takeMedicine/1/2", (response) => {
+        swal("OK! Complete the error report.", "", "success");
+        console.log(response);
+      });
+      $.get(url + "/medicineAPI/takeMedicine/1/1?sender=pharmacy&receiver=patient", (response) => {
         console.log(response);
       });
     });

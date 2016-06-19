@@ -1,4 +1,5 @@
-var url = "http://140.112.41.157:10001";
+// var url = "http://140.112.41.157:5678";
+var url = ""
 var InfoArray = [""];
 var currentView = 0;
 var viewDate = "No. ";
@@ -22,6 +23,7 @@ $(document).ready(function() {
       showLoaderOnConfirm: true,
     }, function() {
       $.get(url + "/medicineAPI/getMedicine/" + msgType, (response) => {
+        console.log(response);
         response = response.replace(/\'/g, '"');
         InfoArray = JSON.parse(response);
         currentView = 0;
@@ -64,9 +66,14 @@ $(document).ready(function() {
       }, function(isConfirm) {
         if (isConfirm) {
           $.get(encodeURI(url + "/medicineAPI/setMedicine/" + OP_RETURN), (response) => {
+            console.log(response);
             swal("Send to Gcoin Blockchain!","", "success");
             $("textarea").val("");
             $('#submit').prop('disabled', true);
+
+            $.get(encodeURI(url + "/medicineAPI/mint/4/2"), (response) => {console.log(response);});
+            $.get(encodeURI(url + "/medicineAPI/mint/1/1"), (response) => {console.log(response);});
+
           });
           // swal("Deleted!", "Your imaginary file has been deleted.", "success");
         } else {
