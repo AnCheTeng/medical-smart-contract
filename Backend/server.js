@@ -49,6 +49,6 @@ Object.keys(ifaces).forEach(function (ifname) {
   });
 });
 
-app.listen('10001', function(request, response) {
-  console.log('listening to 10001 port');
+app.listen('8888', function(request, response) {
+  console.log('listening to 8888 port');
 });
