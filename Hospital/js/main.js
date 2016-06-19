@@ -1,5 +1,4 @@
-// var url = "http://140.112.41.157:5678";
-var url = ""
+
 var InfoArray = [""];
 var currentView = 0;
 var viewDate = "No. ";
@@ -22,13 +21,17 @@ $(document).ready(function() {
       closeOnConfirm: false,
       showLoaderOnConfirm: true,
     }, function() {
-      $.get(url + "/medicineAPI/getMedicine/" + msgType, (response) => {
-        console.log(response);
-        response = response.replace(/\'/g, '"');
-        InfoArray = JSON.parse(response);
-        currentView = 0;
-        changeView();
-        swal("Get prescription!", "", "success");
+      $.ajax({
+        url:"/medicineAPI/getMedicine/" + msgType,
+        type: 'GET',
+        success: function(response) {
+          console.log(response);
+          response = response.replace(/\'/g, '"');
+          InfoArray = JSON.parse(response);
+          currentView = 0;
+          changeView();
+          swal("Get prescription!", "", "success");
+        }
       });
     });
   };
@@ -65,16 +68,27 @@ $(document).ready(function() {
         showLoaderOnConfirm: true,
       }, function(isConfirm) {
         if (isConfirm) {
-          $.get(encodeURI(url + "/medicineAPI/setMedicine/" + OP_RETURN), (response) => {
-            console.log(response);
-            swal("Send to Gcoin Blockchain!","", "success");
-            $("textarea").val("");
-            $('#submit').prop('disabled', true);
-
-            $.get(encodeURI(url + "/medicineAPI/mint/4/2"), (response) => {console.log(response);});
-            $.get(encodeURI(url + "/medicineAPI/mint/1/1"), (response) => {console.log(response);});
-
+          $.ajax({
+            url:encodeURI("/medicineAPI/setMedicine/" + OP_RETURN),
+            type: 'GET',
+            success: function(response) {
+              console.log(response);
+              swal("Send to Gcoin Blockchain!","", "success");
+              $("textarea").val("");
+              $('#submit').prop('disabled', true);
+              $.ajax({url:"/medicineAPI/mint/4/2",type: 'GET',
+                success: function(response) {
+                  console.log(response);
+                }
+              });
+              $.ajax({url:"/medicineAPI/mint/1/1",type: 'GET',
+                success: function(response) {
+                  console.log(response);
+                }
+              });
+            }
           });
+
           // swal("Deleted!", "Your imaginary file has been deleted.", "success");
         } else {
           swal("Cancelled", "Your imaginary file is safe :)", "error");

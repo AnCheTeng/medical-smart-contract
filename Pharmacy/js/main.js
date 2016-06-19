@@ -1,5 +1,3 @@
-// var url = "http://140.112.41.157:5678";
-var url = ""
 var InfoArray = [""];
 var currentView = 0;
 var viewDate = "No. ";
@@ -22,13 +20,16 @@ $(document).ready(function() {
       closeOnConfirm: false,
       showLoaderOnConfirm: true,
     }, function() {
-      $.get(url + "/medicineAPI/getMedicine/"+msgType, (response) => {
-        console.log(response);
-        response = response.replace(/\'/g, '"');
-        InfoArray = JSON.parse(response);
-        currentView = 0;
-        changeView();
-        swal("Get prescription!","", "success");
+      $.ajax({
+        url:"/medicineAPI/getMedicine/" + msgType,
+        type: 'GET',
+        success: function(response) {
+          console.log(response);
+          response = response.replace(/\'/g, '"');
+          InfoArray = JSON.parse(response);
+          currentView = 0;
+          changeView();
+          swal("Get prescription!", "", "success");        }
       });
     });
   };
@@ -74,12 +75,20 @@ $(document).ready(function() {
       closeOnConfirm: false,
       showLoaderOnConfirm: true,
     }, function() {
-      $.get(url + "/medicineAPI/takeMedicine/2/2", (response) => {
-        swal("Success! Here is your prescription!", "", "success");
-        console.log(response);
+      $.ajax({
+        url:"/medicineAPI/takeMedicine/2/2",
+        type: 'GET',
+        success: function(response) {
+          swal("Success! Here is your prescription!", "", "success");
+          console.log(response);
+        }
       });
-      $.get(url + "/medicineAPI/takeMedicine/1/1?sender=pharmacy&receiver=patient", (response) => {
-        console.log(response);
+      $.ajax({
+        url:"/medicineAPI/takeMedicine/1/1?sender=pharmacy&receiver=patient",
+        type: 'GET',
+        success: function(response) {
+          console.log(response);
+        }
       });
     });
   });
@@ -95,12 +104,20 @@ $(document).ready(function() {
       closeOnConfirm: false,
       showLoaderOnConfirm: true,
     }, function() {
-      $.get(url + "/medicineAPI/takeMedicine/1/2", (response) => {
-        swal("OK! Complete the error report.", "", "success");
-        console.log(response);
+      $.ajax({
+        url:"/medicineAPI/takeMedicine/1/2",
+        type: 'GET',
+        success: function(response) {
+          swal("OK! Complete the error report.", "", "success");
+          console.log(response);
+        }
       });
-      $.get(url + "/medicineAPI/takeMedicine/1/1?sender=pharmacy&receiver=patient", (response) => {
-        console.log(response);
+      $.ajax({
+        url:"/medicineAPI/takeMedicine/1/1?sender=pharmacy&receiver=patient",
+        type: 'GET',
+        success: function(response) {
+          console.log(response);
+        }
       });
     });
   });
