@@ -1,5 +1,5 @@
-var url = "http://140.112.41.157:5678";
-// var url = ""
+// var url = "http://140.112.41.157:5678";
+var url = ""
 var InfoArray = [""];
 var currentView = 0;
 var viewDate = "No. ";
